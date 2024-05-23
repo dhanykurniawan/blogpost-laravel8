@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class AdminCategoryController extends Controller
 {
@@ -25,7 +26,7 @@ class AdminCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.categories.create');
     }
 
     /**
@@ -33,7 +34,14 @@ class AdminCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'slug' => 'required|unique:posts'
+        ]);
+
+        Category::create($validatedData);
+
+        return redirect('dashboard/categories')->with('success', 'New category has been added!');
     }
 
     /**
@@ -49,7 +57,9 @@ class AdminCategoryController extends Controller
      */
     public function edit(category $category)
     {
-        //
+        return view('dashboard.categories.edit', [
+            'category' => $category
+        ]);
     }
 
     /**
@@ -57,7 +67,20 @@ class AdminCategoryController extends Controller
      */
     public function update(Request $request, category $category)
     {
-        //
+        $rules = [
+            'name' => 'required|max:255'
+        ];
+
+        if ($request->slug != $category->slug) {
+            $rules['slug'] = 'required|unique:posts';
+        }
+
+        $validatedData = $request->validate($rules);
+
+        Category::where('id', $category->id)
+            ->update($validatedData);
+
+        return redirect('/dashboard/categories')->with('succes', 'Category has been updated!');
     }
 
     /**
@@ -65,6 +88,16 @@ class AdminCategoryController extends Controller
      */
     public function destroy(category $category)
     {
-        //
+        // hapus di tabel database
+        Category::destroy($category->id);
+
+        return redirect('/dashboard/categories')->with('succes', 'Category has been deleted!');
+    }
+
+    // untuk menangani ketika ada permintaan slug
+    public function checkSlug(Request $request)
+    {
+        $slug = SlugService::createSlug(Category::class, 'slug', $request->name);
+        return response()->json(['slug' => $slug]);
     }
 }

@@ -29,16 +29,16 @@
                 <td>{{ $post->title }}</td>
                 <td>{{ $post->category->name }}</td>
                 <td class="gx-3">
-                    <a href="/dashboard/posts/{{ $post->slug }}">
+                    <a href="/dashboard/posts/{{ $post->slug }}" class="text-decoration-none">
                         <span data-feather="eye" class="badge bg-info"></span>
                     </a>
-                    <a href="/dashboard/posts/{{ $post->slug }}/edit">
+                    <a href="/dashboard/posts/{{ $post->slug }}/edit" class="text-decoration-none ms-2">
                         <span data-feather="edit" class="badge bg-warning"></span>
                     </a>
-                    <form action='/dashboard/posts/{{ $post->slug }}' method='post' class="d-inline">
+                    <form action='/dashboard/posts/{{ $post->slug }}' method='post' class="d-inline p-0">
                         @method('delete')
                         @csrf
-                        <button type="submit" class="badge bg-danger border-0" onclick="return confirm('Are you sure?')">
+                        <button type="submit" class="badge bg-transparent border-0" onclick="return confirm('Are you sure?')">
                             <span data-feather="x-circle" class="badge bg-danger"></span>
                         </button>
                     </form>

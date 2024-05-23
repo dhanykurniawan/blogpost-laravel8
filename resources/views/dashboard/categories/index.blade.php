@@ -27,16 +27,16 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $category->name }}</td>
                 <td class="gx-3">
-                    <a href="/dashboard/categories/{{ $category->slug }}">
+                    <!-- <a href="/dashboard/categories/{{ $category->slug }}">
                         <span data-feather="eye" class="badge bg-info"></span>
-                    </a>
-                    <a href="/dashboard/categories/{{ $category->slug }}/edit">
+                    </a> -->
+                    <a href="/dashboard/categories/{{ $category->slug }}/edit" class="text-decoration-none">
                         <span data-feather="edit" class="badge bg-warning"></span>
                     </a>
                     <form action='/dashboard/categories/{{ $category->slug }}' method='post' class="d-inline">
                         @method('delete')
                         @csrf
-                        <button type="submit" class="badge bg-danger border-0" onclick="return confirm('Are you sure?')">
+                        <button type="submit" class="badge bg-transparent border-0" onclick="return confirm('Are you sure?')">
                             <span data-feather="x-circle" class="badge bg-danger"></span>
                         </button>
                     </form>
